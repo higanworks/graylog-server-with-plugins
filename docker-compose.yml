@@ -1,0 +1,16 @@
+version: '2'
+services:
+  some-mongo:
+    image: "mongo:3"
+  some-elasticsearch:
+    image: "elasticsearch:2"
+    command: "elasticsearch -Des.cluster.name='graylog'"
+  graylog:
+    build: .
+    environment:
+      GRAYLOG_WEB_ENDPOINT_URI: http://127.0.0.1:9000/api
+    links:
+      - some-mongo:mongo
+      - some-elasticsearch:elasticsearch
+    ports:
+      - "9000:9000"
